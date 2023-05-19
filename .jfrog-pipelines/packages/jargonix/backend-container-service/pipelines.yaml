@@ -3,7 +3,7 @@ resources:
     type: GitRepo
     configuration:
       gitProvider: rjGithub                       # <-- replace with your integration
-      path: RjSH1/usecase1                       # <-- replace with your repository name
+      path: RjSH1/usecase1a                       # <-- replace with your repository name
       pullRequestTargetBranches:
         include: ^main$
       buildOn:
