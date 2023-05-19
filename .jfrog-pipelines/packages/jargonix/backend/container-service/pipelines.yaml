@@ -1,5 +1,5 @@
 resources:
-  - name: dbp_repo
+  - name: dbp_repo1
     type: GitRepo
     configuration:
       gitProvider: rjGithub                       # <-- replace with your integration
@@ -12,23 +12,23 @@ resources:
       branches:
         include: {{gitBranch}}       
 
-  - name: dbp_image
+  - name: dbp_image1
     type: Image
     configuration:
       registry: myArtifactory                                # <-- replace with your artifactory integration
-      sourceRepository: test-docker-local               # <-- required if registry is Artifactory
+      sourceRepository: test-docker-local                   # <-- required if registry is Artifactory
       imageName: pipelines.jfrog.io/test-docker-local/dbp  # < -- replace with your image path and name
       imageTag: latest
       autoPull: true
 
-  - name: dbp_build_info
+  - name: dbp_build_info1
     type: BuildInfo
     configuration:
       sourceArtifactory: myArtifactory
       buildName: dbp_build
       buildNumber: 1
 
-  - name: dbp_promoted_build_info
+  - name: dbp_promoted_build_info1
     type: BuildInfo
     configuration:
       sourceArtifactory: myArtifactory
@@ -49,8 +49,7 @@ pipelines:
           dockerImageName: pipelines.jfrog.io/test-docker-local/dbp  # replace with your image path and name
           dockerImageTag: ${run_number}
           inputResources:
-            - name: dbp_repo
-            - name: cron_trigger_docker
+            - name: dbp_repo1
           integrations:
             - name: myArtifactory                            # <-- replace with your artifactory integration
         execution:
@@ -60,14 +59,14 @@ pipelines:
       - name: docker_push
         type: DockerPush
         configuration:
-          affinityGroup: dbp_group
+          affinityGroup: dbp_group1
           targetRepository: test-target-local
           integrations:
             - name: myArtifactory                            # <-- replace with your artifactory integration
           inputSteps:
             - name: docker_build
           outputResources:
-            - name: dbp_image
+            - name: dbp_image1
 
       - name: publish_dbp_build
         type: PublishBuildInfo
@@ -75,7 +74,7 @@ pipelines:
           inputSteps:
             - name: docker_push
           outputResources:
-            - name: dbp_build_info
+            - name: dbp_build_info1
 
       - name: promote_dbp_build
         type: PromoteBuild
@@ -84,7 +83,7 @@ pipelines:
           integrations:
             - name: myArtifactory
           inputResources:
-            - name: dbp_build_info
+            - name: dbp_build_info1
           outputResources:
-            - name: dbp_promoted_build_info
+            - name: dbp_promoted_build_info1
           comment: "Promoted from dev to master branch."
