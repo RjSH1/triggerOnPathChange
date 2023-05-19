@@ -36,7 +36,7 @@ resources:
       buildNumber: 2
 
 pipelines:
-  - name: usecase1a
+  - name: usecase2a
     configuration:
       jfrogCliVersion: 2
     steps:
