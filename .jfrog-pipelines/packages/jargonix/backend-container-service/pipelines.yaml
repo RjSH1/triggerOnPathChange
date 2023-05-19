@@ -3,21 +3,25 @@ resources:
     type: GitRepo
     configuration:
       gitProvider: rjGithub                       # <-- replace with your integration
-      path: RjSH1/usecase1    # <-- replace with your repository name
+      path: RjSH1/usecase1                       # <-- replace with your repository name
       pullRequestTargetBranches:
         include: ^main$
       buildOn:
-        commit: false
-        pullRequestCreate: true       
+        commit: true
+        pullRequestCreate: true
+        pullRequestClose: false
+      cancelPendingRunsOn:
+        newCommit: false
+        pullRequestUpdate: true      
       branches:
-        include: {{gitBranch}}       
+        include: {{gitBranch}}             
 
   - name: dbp_image1
     type: Image
     configuration:
       registry: myArtifactory                                # <-- replace with your artifactory integration
       sourceRepository: test-docker-local                   # <-- required if registry is Artifactory
-      imageName: pipelines.jfrog.io/test-docker-local/dbp  # < -- replace with your image path and name
+      imageName: pipelines.jfrog.io/test-docker-local/dbp  # <-- replace with your image path and name
       imageTag: latest
       autoPull: true
 
